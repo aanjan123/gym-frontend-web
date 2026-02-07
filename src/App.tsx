@@ -20,17 +20,17 @@ import { Members } from './pages/owner/Members';
 import { Attendance } from './pages/owner/Attendance';
 import { Payments } from './pages/owner/Payments';
 import { Announcements } from './pages/owner/Announcements';
+import { ChangePassword } from './pages/owner/ChangePassword';
 
 function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          {/* Public Routes */}
           <Route path="/" element={<SuperAdminLogin />} />
           <Route path="/owner/login" element={<OwnerLogin />} />
+          <Route path="/change-password" element={<ChangePassword />} />
 
-          {/* Super Admin Routes */}
           <Route
             path="/admin"
             element={

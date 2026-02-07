@@ -1,4 +1,4 @@
-import './../../css/Auth.css';
+import '@css/Auth.css';
 import { LoginForm } from '@components/auth/LoginForm';
 
 export const OwnerLogin = () => {

@@ -35,6 +35,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
   useEffect(() => {
     if (isAuthenticated && user?.role === role) {
+      if (user?.role === 'owner' && user?.requirePasswordChange) {
+        navigate('/change-password', { state: { userId: user.userId, requirePasswordChange: true } });
+        return
+      }
       navigate(redirectPath);
     }
   }, [isAuthenticated, user, role, navigate, redirectPath]);
@@ -108,6 +112,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            isPassword
           />
 
           <Button type="submit" fullWidth loading={loading}>
@@ -121,6 +126,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
         <AuthFooter role={role} />
       </div>
-    </div>
+    </div >
   );
 };

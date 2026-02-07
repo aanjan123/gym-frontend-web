@@ -1,13 +1,18 @@
+import React, { useState } from 'react';
+
 interface InputFieldProps {
   id: string;
   type: string;
   label: string;
-  placeholder: string;
-  icon: React.ReactNode;
+  placeholder?: string;
+  icon?: React.ReactNode;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   hint?: string;
+  error?: string;
   required?: boolean;
+  isPassword?: boolean;
+  disabled?: boolean;
 }
 
 export const InputField: React.FC<InputFieldProps> = ({
@@ -19,37 +24,41 @@ export const InputField: React.FC<InputFieldProps> = ({
   value,
   onChange,
   hint,
+  error,
   required,
-}) => (
-  <div className="form-group">
-    <label htmlFor={id}>{label}</label>
-    <div className="input-wrapper">
-      {icon}
-      <input
-        id={id}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        required={required}
-      />
+  isPassword = false,
+  disabled = false,
+}) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const inputType = isPassword ? (showPassword ? 'text' : 'password') : type;
+
+  return (
+    <div className="form-group">
+      <label htmlFor={id}>{label}</label>
+      <div className="input-wrapper">
+        {icon}
+        <input
+          id={id}
+          type={inputType}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          required={required}
+          disabled={disabled}
+        />
+        {isPassword && (
+          <button
+            type="button"
+            className="password-toggle"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? '🙈' : '👁️'}
+          </button>
+        )}
+      </div>
+      {hint && <small className="input-hint">{hint}</small>}
+      {error && <span className="error-text">{error}</span>}
     </div>
-    {hint && <small className="input-hint">{hint}</small>}
-  </div>
-);
-
-
- {/* <div className="form-group">
-            <label htmlFor="email">Email Address</label>
-            <div className="input-wrapper">
-              <Mail className="input-icon" size={18} />
-              <input
-                id="email"
-                type="email"
-                placeholder="admin@gymsaas.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-          </div> */}
+  );
+};

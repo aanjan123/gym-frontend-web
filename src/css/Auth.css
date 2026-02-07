@@ -178,6 +178,143 @@
   }
 }
 
+/* Password Toggle Button */
+.password-toggle {
+  position: absolute;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: var(--text-primary);
+}
+
+.auth-error-box {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+/* Error Text */
+.error-text {
+  color: var(--error);
+  font-size: 0.8125rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Info Box */
+.auth-info-box {
+  background: var(--warning-light);
+  border: 1px solid var(--warning);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.info-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--warning);
+  margin: 0 0 0.5rem 0;
+}
+
+.info-text {
+  font-size: 0.8125rem;
+  color: #92400e;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Password Strength Indicator */
+.password-strength {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.strength-bar-container {
+  flex: 1;
+  height: 4px;
+  background: var(--neutral-200);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.strength-bar {
+  height: 100%;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.strength-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Password Requirements */
+.password-requirements {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin-top: 0.5rem;
+}
+
+.requirements-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 0.75rem 0;
+}
+
+.requirements-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.requirements-list li {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  padding-left: 1.5rem;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.requirements-list li::before {
+  content: '○';
+  position: absolute;
+  left: 0;
+  color: var(--text-tertiary);
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.requirements-list li.requirement-met {
+  color: var(--success);
+}
+
+.requirements-list li.requirement-met::before {
+  content: '✓';
+  color: var(--success);
+}
+
 /* Mobile Styles */
 @media (max-width: 768px) {
   .auth-container {
@@ -208,5 +345,13 @@
 
   .auth-subtitle {
     font-size: 0.875rem;
+  }
+
+  .password-requirements {
+    padding: 0.75rem;
+  }
+
+  .requirements-list li {
+    font-size: 0.75rem;
   }
 }

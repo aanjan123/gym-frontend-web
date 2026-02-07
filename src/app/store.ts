@@ -3,6 +3,7 @@ import authReducer from '../features/auth/authSlice';
 import gymsReducer from '../features/gyms/gymsSlice';
 import membersReducer from '../features/members/membersSlice';
 import dashboardReducer from '../features/dashboard/dashboardSlice';
+import changePasswordReducer from '../features/auth/changePasswordSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     gyms: gymsReducer,
     members: membersReducer,
     dashboard: dashboardReducer,
+    changePassword: changePasswordReducer
   },
 });
 

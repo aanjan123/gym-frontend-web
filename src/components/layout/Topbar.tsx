@@ -27,7 +27,7 @@ export const Topbar: React.FC<TopbarProps> = ({ onMenuClick }) => {
           <Menu size={24} />
         </button>
         <div className="topbar-title">
-          <h1>Welcome back, {user?.name}</h1>
+          <h1>Welcome back, {user?.fullName}</h1>
         </div>
       </div>
 
@@ -39,10 +39,10 @@ export const Topbar: React.FC<TopbarProps> = ({ onMenuClick }) => {
 
         <div className="topbar-user">
           <div className="user-avatar-small">
-            {user?.name.charAt(0).toUpperCase()}
+            {user?.fullName?.charAt(0).toUpperCase()}
           </div>
           <div className="user-details">
-            <p className="user-name-top">{user?.name}</p>
+            <p className="user-name-top">{user?.fullName}</p>
             <p className="user-email">{user?.email}</p>
           </div>
         </div>

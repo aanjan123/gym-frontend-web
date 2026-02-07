@@ -6,8 +6,8 @@ export const SuperAdminLogin = () => {
       role="superadmin"
       redirectPath="/admin/dashboard"
       demoCredentials={[
-        { label: 'Email', value: 'admin@gymsaas.com' },
-        { label: 'Password', value: 'admin123' },
+        { label: 'Email', value: 'superadmin@gymplatform.com' },
+        { label: 'Password', value: 'SuperAdmin@123' },
       ]}
     />
   );
