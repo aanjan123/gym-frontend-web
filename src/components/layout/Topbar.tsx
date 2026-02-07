@@ -33,10 +33,10 @@ export const Topbar: React.FC<TopbarProps> = ({ onMenuClick }) => {
       </div>
 
       <div className="topbar-right">
-        <button className="notification-btn" aria-label="Notifications">
+        {/* <button className="notification-btn" aria-label="Notifications">
           <Bell size={20} />
           <span className="notification-badge">3</span>
-        </button>
+        </button> */}
 
         <div className="topbar-user">
           <div className="user-avatar-small">

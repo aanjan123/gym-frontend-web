@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import api, { setAuthToken } from '@services/api';
 import { LoginResponse, User } from '@/types/User';
-import { GYM_OWNER_LOGIN, SUPER_ADMIN_LOGIN } from '@/constants/url';
+import { AUTH_PROFILE, GYM_OWNER_LOGIN, SUPER_ADMIN_LOGIN, SUPER_ADMIN_PROFILE } from '@/constants/url';
 
 interface AuthState {
   user: User | null;
@@ -10,6 +10,7 @@ interface AuthState {
   isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
+  initializing: boolean;
 }
 
 const initialState: AuthState = {
@@ -18,6 +19,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
   loading: false,
   error: null,
+  initializing: true,
 };
 
 const authSlice = createSlice({
@@ -33,24 +35,43 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.isAuthenticated = true;
       state.loading = false;
+      state.initializing = false;
       state.error = null;
 
-      setAuthToken(action.payload.token);
-      localStorage.setItem('token', action.payload.token);
+      if (action.payload.token) {
+        setAuthToken(action.payload.token);
+        localStorage.setItem('token', action.payload.token);
+        localStorage.setItem('role', action.payload.user?.role || 'owner');
+      }
+    },
+
+    setAuthFromProfile: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
+      state.isAuthenticated = true;
+      state.loading = false;
+      state.initializing = false;
+      state.error = null;
+    },
+
+    authInitFinished: (state) => {
+      state.initializing = false;
     },
     loginFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;
+      state.initializing = false;
       state.error = action.payload;
       state.isAuthenticated = false;
       state.user = null;
       state.token = null;
       setAuthToken(null);
+      localStorage.removeItem('token');
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
       state.loading = false;
+      state.initializing = false;
       state.error = null;
       setAuthToken(null);
       localStorage.removeItem('token');
@@ -61,7 +82,15 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, logout, clearError } = authSlice.actions;
+export const {
+  logout,
+  loginStart,
+  clearError,
+  loginSuccess,
+  loginFailure,
+  authInitFinished,
+  setAuthFromProfile
+} = authSlice.actions;
 
 export const login = (email: string, password: string, gymId = '') => {
   return async (dispatch: any) => {
@@ -77,6 +106,7 @@ export const login = (email: string, password: string, gymId = '') => {
         const responseData: any = response.data;
         if (responseData.success && responseData.requirePasswordChange) {
           dispatch(loginSuccess({
+            success: false,
             user: {
               userId: responseData.userId,
               role: 'owner',
@@ -92,6 +122,34 @@ export const login = (email: string, password: string, gymId = '') => {
       const message =
         error.response?.data?.error || error.message || 'Login failed';
       dispatch(loginFailure(message));
+    }
+  };
+};
+
+export const initializeAuth = () => {
+  return async (dispatch: any) => {
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+
+    if (!token) {
+      dispatch(authInitFinished());
+      return;
+    }
+
+    try {
+      setAuthToken(token);
+
+      const response = await api.get(role === 'owner' ? AUTH_PROFILE : SUPER_ADMIN_PROFILE);
+      if (response.data?.success) {
+        const data = response.data.profile;
+        dispatch(setAuthFromProfile(data));
+      } else {
+        dispatch(logout());
+      }
+    } catch (error) {
+      dispatch(logout());
+    } finally {
+      dispatch(authInitFinished());
     }
   };
 };
