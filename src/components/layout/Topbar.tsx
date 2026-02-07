@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu, LogOut, Bell } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -14,6 +14,7 @@ export const Topbar: React.FC<TopbarProps> = ({ onMenuClick }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
+  const nameToDisplay = useMemo(() => user?.role === 'superadmin' ? user?.fullName : user?.gymName, [user]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -27,7 +28,7 @@ export const Topbar: React.FC<TopbarProps> = ({ onMenuClick }) => {
           <Menu size={24} />
         </button>
         <div className="topbar-title">
-          <h1>Welcome back, {user?.fullName}</h1>
+          <h1>Welcome back, {nameToDisplay}</h1>
         </div>
       </div>
 
@@ -39,10 +40,10 @@ export const Topbar: React.FC<TopbarProps> = ({ onMenuClick }) => {
 
         <div className="topbar-user">
           <div className="user-avatar-small">
-            {user?.fullName?.charAt(0).toUpperCase()}
+            {nameToDisplay?.charAt(0).toUpperCase()}
           </div>
           <div className="user-details">
-            <p className="user-name-top">{user?.fullName}</p>
+            <p className="user-name-top">{nameToDisplay}</p>
             <p className="user-email">{user?.email}</p>
           </div>
         </div>

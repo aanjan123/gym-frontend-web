@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -44,6 +44,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const { user } = useAppSelector((state) => state.auth);
 
   const filteredMenuItems = menuItems.filter((item) => item.role === user?.role);
+  const nameToDisplay = useMemo(() => user?.role === 'superadmin' ? user?.fullName : user?.gymName, [user]);
 
   return (
     <>
@@ -81,10 +82,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <div className="sidebar-footer">
           <div className="sidebar-user">
             <div className="user-avatar">
-              {user?.fullName?.charAt(0).toUpperCase()}
+              {nameToDisplay?.charAt(0).toUpperCase()}
             </div>
             <div className="user-info">
-              <p className="user-name">{user?.fullName}</p>
+              <p className="user-name">{nameToDisplay}</p>
               <p className="user-role">
                 {user?.role === 'superadmin' ? 'Super Admin' : 'Gym Owner'}
               </p>

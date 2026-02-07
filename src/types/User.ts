@@ -4,6 +4,7 @@ export interface User {
   fullName?: string;
   role?: string;
   userId?: string;
+  gymName?: string;
   requirePasswordChange?: boolean;
 }
 
