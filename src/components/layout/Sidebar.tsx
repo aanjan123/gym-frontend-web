@@ -36,6 +36,7 @@ const menuItems: MenuItem[] = [
   { path: '/owner/members', icon: <Users size={20} />, label: 'Members', role: 'owner' },
   { path: '/owner/attendance', icon: <ClipboardCheck size={20} />, label: 'Attendance', role: 'owner' },
   { path: '/owner/payments', icon: <CreditCard size={20} />, label: 'Payments', role: 'owner' },
+  { path: '/owner/packages', label: 'Packages', role: 'owner', icon: <CreditCard size={20} /> },
   { path: '/owner/announcements', icon: <Megaphone size={20} />, label: 'Announcements', role: 'owner' },
 ];
 

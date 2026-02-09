@@ -85,6 +85,14 @@
   align-items: center;
 }
 
+.form-group-full {
+  width: 100%;
+}
+
+.input-error {
+  border-color: var(--error);
+}
+
 .input-icon {
   position: absolute;
   left: 1rem;

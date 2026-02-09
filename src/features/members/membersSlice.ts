@@ -1,27 +1,38 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Member, members as initialMembers } from '../../data/dummyData';
+import api from '@/services/api';
+import {
+  Member,
+  CreateMemberPayload,
+  UpdateMemberPayload,
+  MemberFilters,
+  MembersPagination,
+} from './types';
 
 interface MembersState {
   members: Member[];
   selectedMember: Member | null;
   loading: boolean;
   error: string | null;
-  filters: {
-    status: 'all' | 'active' | 'inactive' | 'suspended';
-    search: string;
-    paymentStatus: 'all' | 'paid' | 'due' | 'overdue';
-  };
+  validationErrors: Record<string, string>;
+  filters: MemberFilters;
+  pagination: MembersPagination;
 }
 
 const initialState: MembersState = {
-  members: initialMembers,
+  members: [],
   selectedMember: null,
   loading: false,
   error: null,
+  validationErrors: {},
   filters: {
     status: 'all',
     search: '',
-    paymentStatus: 'all',
+  },
+  pagination: {
+    currentPage: 1,
+    totalPages: 1,
+    limit: 50,
+    totalMembers: 0,
   },
 };
 
@@ -29,52 +40,221 @@ const membersSlice = createSlice({
   name: 'members',
   initialState,
   reducers: {
-    setMembers: (state, action: PayloadAction<Member[]>) => {
-      state.members = action.payload;
+
+    membersRequestStart: (state) => {
+      state.loading = true;
+      state.error = null;
+      state.validationErrors = {};
     },
+    membersRequestFailure: (state, action: PayloadAction<string>) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    setMembers: (
+      state,
+      action: PayloadAction<{ members: Member[]; pagination: MembersPagination }>
+    ) => {
+      state.members = action.payload.members;
+      state.pagination = action.payload.pagination;
+      state.loading = false;
+    },
+
     addMember: (state, action: PayloadAction<Member>) => {
       state.members.unshift(action.payload);
+      state.pagination.totalMembers += 1;
+      state.loading = false;
+      state.validationErrors = {};
     },
-    updateMember: (state, action: PayloadAction<Member>) => {
-      const index = state.members.findIndex((m) => m.id === action.payload.id);
-      if (index !== -1) {
-        state.members[index] = action.payload;
+
+    updateMemberInState: (state, action: PayloadAction<Member>) => {
+      const idx = state.members.findIndex(m => m.id === action.payload.id);
+      if (idx !== -1) state.members[idx] = action.payload;
+
+      if (state.selectedMember?.id === action.payload.id) {
+        state.selectedMember = action.payload;
       }
+
+      state.loading = false;
     },
-    deleteMember: (state, action: PayloadAction<string>) => {
-      state.members = state.members.filter((m) => m.id !== action.payload);
+
+    deleteMemberFromState: (state, action: PayloadAction<number>) => {
+      state.members = state.members.filter(m => m.id !== action.payload);
+      state.pagination.totalMembers = Math.max(0, state.pagination.totalMembers - 1);
+      if (state.selectedMember?.id === action.payload) {
+        state.selectedMember = null;
+      }
+      state.loading = false;
     },
+
     setSelectedMember: (state, action: PayloadAction<Member | null>) => {
       state.selectedMember = action.payload;
+      state.loading = false;
     },
-    setStatusFilter: (state, action: PayloadAction<'all' | 'active' | 'inactive' | 'suspended'>) => {
+
+    setValidationErrors: (state, action: PayloadAction<Record<string, string>>) => {
+      state.validationErrors = action.payload;
+      state.loading = false;
+    },
+
+    clearErrors: (state) => {
+      state.error = null;
+      state.validationErrors = {};
+    },
+
+    setStatusFilter: (state, action: PayloadAction<'all' | 'active' | 'expired'>) => {
       state.filters.status = action.payload;
+      state.pagination.currentPage = 1;
+    },
+    setPackageFilter: (state, action: PayloadAction<number | undefined>) => {
+      state.filters.packageId = action.payload;
+      state.pagination.currentPage = 1;
     },
     setSearchFilter: (state, action: PayloadAction<string>) => {
       state.filters.search = action.payload;
     },
-    setPaymentStatusFilter: (state, action: PayloadAction<'all' | 'paid' | 'due' | 'overdue'>) => {
-      state.filters.paymentStatus = action.payload;
+    clearFilters: (state) => {
+      state.filters = initialState.filters;
+      state.pagination.currentPage = 1;
     },
-    deactivateMember: (state, action: PayloadAction<string>) => {
-      const member = state.members.find((m) => m.id === action.payload);
-      if (member) {
-        member.status = 'inactive';
-      }
+
+    setPage: (state, action: PayloadAction<number>) => {
+      state.pagination.currentPage = action.payload;
     },
+
+    resetMembersState: () => initialState,
   },
 });
 
 export const {
+  membersRequestStart,
+  membersRequestFailure,
   setMembers,
   addMember,
-  updateMember,
-  deleteMember,
+  updateMemberInState,
+  deleteMemberFromState,
   setSelectedMember,
+  setValidationErrors,
+  clearErrors,
   setStatusFilter,
+  setPackageFilter,
   setSearchFilter,
-  setPaymentStatusFilter,
-  deactivateMember,
+  clearFilters,
+  setPage,
+  resetMembersState,
 } = membersSlice.actions;
+
+// ========================
+// MEMBERS
+// ========================
+export const fetchMembers =
+  (page?: number, limit?: number, filters?: Partial<MemberFilters>) =>
+    async (dispatch: any, getState: any) => {
+      dispatch(membersRequestStart());
+
+      const state = getState().members;
+      const params = new URLSearchParams({
+        page: String(page ?? state.pagination.currentPage),
+        limit: String(limit ?? state.pagination.limit),
+      });
+
+      const f = filters ?? state.filters;
+      if (f.status !== 'all') params.append('status', f.status);
+      if (f.packageId) params.append('packageId', String(f.packageId));
+      if (f.search) params.append('search', f.search);
+
+      try {
+        const res = await api.get(`/owner/members?${params}`);
+        if (res.data?.success) {
+          dispatch(setMembers(res.data));
+        } else {
+          dispatch(membersRequestFailure(res.data?.error || 'Failed to fetch members'));
+        }
+      } catch (err: any) {
+        dispatch(membersRequestFailure(err.response?.data?.error || err.message));
+      }
+    };
+
+export const fetchMemberById =
+  (id: number) =>
+    async (dispatch: any) => {
+      dispatch(membersRequestStart());
+      try {
+        const res = await api.get(`/owner/members/${id}`);
+        if (res.data?.success) {
+          dispatch(setSelectedMember(res.data.member));
+        } else {
+          dispatch(membersRequestFailure(res.data?.error));
+        }
+      } catch (err: any) {
+        dispatch(membersRequestFailure(err.response?.data?.error || err.message));
+      }
+    };
+
+export const createMember =
+  (payload: CreateMemberPayload, onSuccess?: () => void) =>
+    async (dispatch: any) => {
+      dispatch(membersRequestStart());
+      try {
+        const res = await api.post('/owner/members', payload);
+        if (res.data?.success) {
+          dispatch(addMember(res.data.member));
+          onSuccess?.();
+        } else if (res.data?.details) {
+          const errors: Record<string, string> = {};
+          res.data.details.forEach((e: any) => (errors[e.field] = e.message));
+          dispatch(setValidationErrors(errors));
+        } else {
+          dispatch(membersRequestFailure(res.data?.error));
+        }
+      } catch (err: any) {
+        const details = err.response?.data?.details;
+        if (details) {
+          const errors: Record<string, string> = {};
+          details.forEach((e: any) => (errors[e.field] = e.message));
+          dispatch(setValidationErrors(errors));
+        } else {
+          dispatch(membersRequestFailure(err.response?.data?.error || err.message));
+        }
+      }
+    };
+
+export const updateMember =
+  (id: number, payload: UpdateMemberPayload, onSuccess?: () => void) =>
+    async (dispatch: any) => {
+      dispatch(membersRequestStart());
+      try {
+        const res = await api.put(`/owner/members/${id}`, payload);
+        if (res.data?.success) {
+          dispatch(updateMemberInState(res.data.member));
+          onSuccess?.();
+        } else if (res.data?.details) {
+          const errors: Record<string, string> = {};
+          res.data.details.forEach((e: any) => (errors[e.field] = e.message));
+          dispatch(setValidationErrors(errors));
+        } else {
+          dispatch(membersRequestFailure(res.data?.error));
+        }
+      } catch (err: any) {
+        dispatch(membersRequestFailure(err.response?.data?.error || err.message));
+      }
+    };
+
+export const deleteMember =
+  (id: number, onSuccess?: () => void) =>
+    async (dispatch: any) => {
+      dispatch(membersRequestStart());
+      try {
+        const res = await api.delete(`/owner/members/${id}`);
+        if (res.data?.success) {
+          dispatch(deleteMemberFromState(id));
+          onSuccess?.();
+        } else {
+          dispatch(membersRequestFailure(res.data?.error));
+        }
+      } catch (err: any) {
+        dispatch(membersRequestFailure(err.response?.data?.error || err.message));
+      }
+    };
 
 export default membersSlice.reducer;

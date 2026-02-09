@@ -13,6 +13,7 @@ interface InputFieldProps {
   required?: boolean;
   isPassword?: boolean;
   disabled?: boolean;
+  fullWidth?: boolean;
 }
 
 export const InputField: React.FC<InputFieldProps> = ({
@@ -28,13 +29,14 @@ export const InputField: React.FC<InputFieldProps> = ({
   required,
   isPassword = false,
   disabled = false,
+  fullWidth = false,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const inputType = isPassword ? (showPassword ? 'text' : 'password') : type;
 
   return (
-    <div className="form-group">
+    <div className={`form-group ${fullWidth ? 'form-group-full' : ''}`}>
       <label htmlFor={id}>{label}</label>
       <div className="input-wrapper">
         {icon}

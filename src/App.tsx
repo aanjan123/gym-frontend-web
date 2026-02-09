@@ -18,6 +18,7 @@ import { Dashboard as AdminDashboard } from './pages/admin/Dashboard';
 import { useAppDispatch } from './app/hooks';
 import { Members } from './pages/owner/Members';
 import { Payments } from './pages/owner/Payments';
+import { Packages } from './pages/owner/Packages';
 import { Attendance } from './pages/owner/Attendance';
 import { initializeAuth } from './features/auth/authSlice';
 import { Announcements } from './pages/owner/Announcements';
@@ -69,6 +70,7 @@ function App() {
           <Route path="members" element={<Members />} />
           <Route path="attendance" element={<Attendance />} />
           <Route path="payments" element={<Payments />} />
+          <Route path="packages" element={<Packages />} />
           <Route path="announcements" element={<Announcements />} />
         </Route>
 
