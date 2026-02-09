@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from 'axios';
 let token: string | null = null;
 // import.meta?.env?.VITE_BASE_URL ||
 const api: AxiosInstance = axios.create({
-  baseURL: 'https://gym-app-backend-9rz8.onrender.com/api/',
+  baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
