@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardContent } from '../../components/ui/Card';
-import { Button } from '../../components/ui/Button';
-import { Modal } from '../../components/ui/Modal';
 import { CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
+import { Modal } from '@components/ui/Modal';
+import { Button } from '@components/ui/Button';
+import { Card, CardContent } from '@components/ui/Card';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { GymDetailsForm } from '@components/gym/GymDetailsForm';
 import { OwnerDetailsForm } from '@components/gym/OwnerDetailsForm';
-import { SubscriptionDetailsForm } from '@components/gym/SubscriptionDetailsForm';
-
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { clearGymsState, createGym } from '@/features/gyms/gymsSlice';
+import { SubscriptionDetailsForm } from '@components/gym/SubscriptionDetailsForm';
 
 import '@css/Auth.css';
 import { FieldErrors } from '@/types/Gym';

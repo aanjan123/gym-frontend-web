@@ -1,18 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DashboardStats, Attendance, Announcement } from '../../data/dummyData';
 
-interface DashboardState {
-  stats: DashboardStats;
-  attendances: Attendance[];
-  announcements: Announcement[];
-  loading: boolean;
-  error: string | null;
-}
+import api from '@/services/api';
+import { DashboardState, DashboardStatsApiResponse } from '@/types/Dashboard';
 
 const initialState: DashboardState = {
-  stats: {},
-  attendances: [],
-  announcements: [],
+  stats: null,
   loading: false,
   error: null,
 };
@@ -21,41 +13,50 @@ const dashboardSlice = createSlice({
   name: 'dashboard',
   initialState,
   reducers: {
-    setStats: (state, action: PayloadAction<DashboardStats>) => {
+    dashboardRequestStart: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    dashboardRequestFailure: (state, action: PayloadAction<string>) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    setDashboardStats: (state, action: PayloadAction<DashboardStatsApiResponse>) => {
       state.stats = action.payload;
+      state.loading = false;
     },
-    setAttendances: (state, action: PayloadAction<Attendance[]>) => {
-      state.attendances = action.payload;
-    },
-    addAttendance: (state, action: PayloadAction<Attendance>) => {
-      state.attendances.unshift(action.payload);
-    },
-    setAnnouncements: (state, action: PayloadAction<Announcement[]>) => {
-      state.announcements = action.payload;
-    },
-    addAnnouncement: (state, action: PayloadAction<Announcement>) => {
-      state.announcements.unshift(action.payload);
-    },
-    toggleAnnouncementPublish: (state, action: PayloadAction<string>) => {
-      const announcement = state.announcements.find((a) => a.id === action.payload);
-      if (announcement) {
-        announcement.isPublished = !announcement.isPublished;
-      }
-    },
-    deleteAnnouncement: (state, action: PayloadAction<string>) => {
-      state.announcements = state.announcements.filter((a) => a.id !== action.payload);
-    },
+    clearDashboardState: () => initialState,
   },
 });
 
 export const {
-  setStats,
-  setAttendances,
-  addAttendance,
-  setAnnouncements,
-  addAnnouncement,
-  toggleAnnouncementPublish,
-  deleteAnnouncement,
+  dashboardRequestStart,
+  dashboardRequestFailure,
+  setDashboardStats,
+  clearDashboardState,
 } = dashboardSlice.actions;
+
+export const fetchDashboardStats = () => async (dispatch: any) => {
+  dispatch(dashboardRequestStart());
+  try {
+    const res = await api.get('/superadmin/dashboard');
+
+    if (res.data?.success) {
+      dispatch(setDashboardStats(res.data.dashboard));
+    } else {
+      dispatch(
+        dashboardRequestFailure(res.data?.error || 'Failed to load dashboard')
+      );
+    }
+  } catch (error: any) {
+    dispatch(
+      dashboardRequestFailure(
+        error.response?.data?.error ||
+        error.message ||
+        'Failed to load dashboard'
+      )
+    );
+  }
+};
 
 export default dashboardSlice.reducer;

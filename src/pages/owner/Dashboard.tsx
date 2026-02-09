@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Users, TrendingUp, DollarSign, ClipboardCheck } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { setStats } from '../../features/dashboard/dashboardSlice';
+// import { setStats } from '../../features/dashboard/dashboardSlice';
 import { Card, CardHeader, CardContent } from '../../components/ui/Card';
 import { attendanceTrendData, revenueData } from '../../data/dummyData';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -28,14 +28,6 @@ const StatCard: React.FC<{
 export const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const { stats } = useAppSelector((state) => state.dashboard);
-
-  useEffect(() => {
-    dispatch(setStats({
-      activeMembers: 245,
-      todayAttendance: 145,
-      monthlyRevenue: 24500,
-    }));
-  }, [dispatch]);
 
   return (
     <div className="dashboard">

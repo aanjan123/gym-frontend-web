@@ -164,5 +164,67 @@ export const fetchAllGyms = (page = 1, limit = 50) => {
   };
 };
 
+export const suspendGymAsync = (gymId: number, reason: string) => {
+  return async (dispatch: any) => {
+    dispatch(gymsRequestStart());
+
+    try {
+      const res = await api.post(
+        `/superadmin/gyms/${gymId}/suspend`,
+        { reason }
+      );
+
+      if (res.data?.success) {
+        dispatch(suspendGym(gymId));
+
+        dispatch(setSelectedGym(res.data.gym));
+      } else {
+        dispatch(
+          gymsRequestFailure(res.data?.error || 'Failed to suspend gym')
+        );
+      }
+    } catch (error: any) {
+      dispatch(
+        gymsRequestFailure(
+          error.response?.data?.details ||
+            error.response?.data?.error ||
+            error.message ||
+            'Failed to suspend gym'
+        )
+      );
+    }
+  };
+};
+
+export const activateGymAsync = (gymId: number) => {
+  return async (dispatch: any) => {
+    dispatch(gymsRequestStart());
+
+    try {
+      const res = await api.post(
+        `/superadmin/gyms/${gymId}/activate`
+      );
+
+      if (res.data?.success) {
+        dispatch(activateGym(gymId));
+        dispatch(setSelectedGym(res.data.gym));
+      } else {
+        dispatch(
+          gymsRequestFailure(res.data?.error || 'Failed to activate gym')
+        );
+      }
+    } catch (error: any) {
+      dispatch(
+        gymsRequestFailure(
+          error.response?.data?.details ||
+            error.response?.data?.error ||
+            error.message ||
+            'Failed to activate gym'
+        )
+      );
+    }
+  };
+};
+
 
 export default gymsSlice.reducer;

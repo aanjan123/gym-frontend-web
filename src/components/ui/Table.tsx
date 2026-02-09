@@ -13,6 +13,8 @@ interface TableProps<T> {
   columns: Column<T>[];
   emptyMessage?: string;
   onRowClick?: (item: T) => void;
+  loading?: boolean;
+  skeletonRows?: number;
 }
 
 export function Table<T extends { id: string | number }>({
@@ -20,6 +22,8 @@ export function Table<T extends { id: string | number }>({
   columns,
   emptyMessage = 'No data available',
   onRowClick,
+  loading = false,
+  skeletonRows = 5,
 }: TableProps<T>) {
   const getCellValue = (item: T, accessor: Column<T>['accessor']) => {
     if (typeof accessor === 'function') {
@@ -28,7 +32,35 @@ export function Table<T extends { id: string | number }>({
     return item[accessor] as React.ReactNode;
   };
 
-  if (data.length === 0) {
+  /* 🔹 Skeleton loader */
+  if (loading) {
+    return (
+      <div className="table-container">
+        <table className="table">
+          <thead>
+            <tr>
+              {columns.map((col, index) => (
+                <th key={index} style={{ width: col.width }} />
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {Array.from({ length: skeletonRows }).map((_, rowIndex) => (
+              <tr key={rowIndex}>
+                {columns.map((_, colIndex) => (
+                  <td key={colIndex}>
+                    <div className="table-skeleton" />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  if (!loading && data.length === 0) {
     return (
       <div className="table-empty">
         <p>{emptyMessage}</p>

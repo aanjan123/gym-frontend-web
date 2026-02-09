@@ -19,9 +19,9 @@ import { useAppDispatch } from './app/hooks';
 import { Members } from './pages/owner/Members';
 import { Payments } from './pages/owner/Payments';
 import { Packages } from './pages/owner/Packages';
-import { Attendance } from './pages/owner/Attendance';
+// import { Attendance } from './pages/owner/Attendance';
 import { initializeAuth } from './features/auth/authSlice';
-import { Announcements } from './pages/owner/Announcements';
+// import { Announcements } from './pages/owner/Announcements';
 import { ChangePassword } from './pages/owner/ChangePassword';
 import { FullScreenLoader } from './components/ui/FullScreenLoader';
 import { Dashboard as OwnerDashboard } from './pages/owner/Dashboard';
@@ -68,10 +68,10 @@ function App() {
           <Route index element={<Navigate to="/owner/dashboard" replace />} />
           <Route path="dashboard" element={<OwnerDashboard />} />
           <Route path="members" element={<Members />} />
-          <Route path="attendance" element={<Attendance />} />
+          {/* <Route path="attendance" element={<Attendance />} /> */}
           <Route path="payments" element={<Payments />} />
           <Route path="packages" element={<Packages />} />
-          <Route path="announcements" element={<Announcements />} />
+          {/* <Route path="announcements" element={<Announcements />} /> */}
         </Route>
 
         {/* Catch all */}

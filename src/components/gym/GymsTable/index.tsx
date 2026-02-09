@@ -1,25 +1,18 @@
 import React from 'react';
+import { Gym } from '@/types/Gym';
 import { Table } from '@components/ui/Table';
 import { Button } from '@components/ui/Button';
 
-interface Gym {
-  id: string;
-  name: string;
-  ownerEmail: string;
-  status: 'active' | 'trial' | 'suspended';
-  activeMembers: number;
-  totalMembers: number;
-  createdAt: string;
-}
-
 interface GymsTableProps {
   gyms: Gym[];
-  onSuspend: (id: string) => void;
-  onActivate: (id: string) => void;
+  loading?: boolean;
+  onSuspend: (id: number) => void;
+  onActivate: (id: number) => void;
 }
 
 export const GymsTable: React.FC<GymsTableProps> = ({
   gyms,
+  loading,
   onSuspend,
   onActivate,
 }) => {
@@ -81,6 +74,7 @@ export const GymsTable: React.FC<GymsTableProps> = ({
     <Table
       data={gyms}
       columns={columns}
+      loading={loading}
       emptyMessage="No gyms found"
     />
   );

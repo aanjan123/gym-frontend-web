@@ -6,14 +6,15 @@ export interface Gym {
   address: string | null;
   phone: string | null;
   email: string;
-  owner_email: string;
-  owner_name: string;
-  status: 'active' | 'inactive';
-  subscription_plan: string | null;
-  subscription_expires_at: string | null;
-  created_at: string;
-  active_members: string;
+  ownerEmail: string;
+  ownerName: string;
+  status: 'active' | 'inactive' | 'suspended' | 'trial';
+  subscriptionPlan: string | null;
+  subscriptionExpiresAt: string | null;
+  createdAt: string;
+  activeMembers: string;
   owners: string;
+  totalMembers: string;
 }
 
 export interface GymPagination {
