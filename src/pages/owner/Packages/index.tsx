@@ -3,12 +3,12 @@ import { Button } from '@/components/ui/Button';
 import { Package } from '@/features/packages/types';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { PackageTable } from '@/components/packages/PackageTable';
+import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { Card, CardHeader, CardContent } from '@/components/ui/Card';
 import { PackageFormModal } from '@/components/packages/PackageFormModal';
 import { PackageViewModal } from '@/components/packages/PackageViewModal';
 import { fetchPackages, deletePackage, clearLastCreatedPackage } from '@/features/packages/packagesSlice';
 import '@css/package.css';
-import { ConfirmationModal } from '@/components/ConfirmationModal';
 
 export const Packages = () => {
   const dispatch = useAppDispatch();
