@@ -6,6 +6,7 @@ import PackageReducer from '@features/packages/packagesSlice';
 import paymentsReducer from '@/features/Payments/paymentsSlice';
 import dashboardReducer from '@features/dashboard/dashboardSlice';
 import changePasswordReducer from '@features/auth/changePasswordSlice';
+import attendanceReducer from '@/features/attendance/attendanceSlice';
 import ownerDashboardReducer from '@/features/ownerDashboard/ownerDashboardSlice';
 
 export const store = configureStore({
@@ -14,8 +15,9 @@ export const store = configureStore({
     gyms: gymsReducer,
     members: membersReducer,
     packages: PackageReducer,
-    dashboard: dashboardReducer,
     payments: paymentsReducer,
+    dashboard: dashboardReducer,
+    attendance: attendanceReducer,
     ownerDashboard: ownerDashboardReducer,
     changePassword: changePasswordReducer
   },

@@ -9,10 +9,11 @@ import { PackageFormModal } from '@/components/packages/PackageFormModal';
 import { PackageViewModal } from '@/components/packages/PackageViewModal';
 import { fetchPackages, deletePackage, clearLastCreatedPackage } from '@/features/packages/packagesSlice';
 import '@css/package.css';
+import { Toast } from '@/components/ui/Toast';
 
 export const Packages = () => {
   const dispatch = useAppDispatch();
-  const { packages } = useAppSelector(s => s.packages);
+  const { packages, error } = useAppSelector(s => s.packages);
 
   const [openForm, setOpenForm] = useState(false);
   const [editing, setEditing] = useState<Package | null>(null);
@@ -81,6 +82,10 @@ export const Packages = () => {
         onClose={() => setPackageToDelete(null)}
         onConfirm={handleConfirmDelete}
       />
+
+      {error && (
+        <Toast type='error' message={error} onClose={() => dispatch(clearLastCreatedPackage())} />
+      )}
     </div>
   );
 };

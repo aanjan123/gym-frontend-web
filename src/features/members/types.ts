@@ -16,6 +16,7 @@ export interface Member {
   packageName?: string;
   packagePrice?: number;
   membershipStatus: 'active' | 'expired';
+  todayAttendanceStatus?: 'absent' | 'checked_in' | 'checked_out';
 }
 
 export interface CreateMemberPayload {

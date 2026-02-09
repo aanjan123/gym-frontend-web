@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { UserPlus, Download, Upload } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import {
+  setPage,
+  clearErrors,
   fetchMembers,
   createMember,
   updateMember,
   deleteMember,
-  setPage,
-  clearErrors,
 } from '@/features/members/membersSlice';
-import { Card, CardHeader, CardContent } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
-import { MembersFilters } from '@components/members/MembersFilters';
-import { MembersTable } from '@components/members/MembersTable';
-import { MemberForm } from '@components/members/MemberForm';
-import { MemberDetails } from '@components/members/MemberDetails';
-import { Pagination } from '@components/members/Pagination';
+import { Button } from '@/components/ui/Button';
 import { Member } from '@/features/members/types';
-import './Members.css';
+import { MemberForm } from '@components/members/MemberForm';
+import { Pagination } from '@components/members/Pagination';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { MembersTable } from '@components/members/MembersTable';
 import { fetchPackages } from '@/features/packages/packagesSlice';
+import { MemberDetails } from '@components/members/MemberDetails';
+import { MembersFilters } from '@components/members/MembersFilters';
+import { Card, CardHeader, CardContent } from '@/components/ui/Card';
+import './Members.css';
+import { Toast } from '@/components/ui/Toast';
 
 export const Members: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -134,10 +135,7 @@ export const Members: React.FC = () => {
       </div>
 
       {error && (
-        <div className="alert alert-error">
-          <span>{error}</span>
-          <button onClick={() => dispatch(clearErrors())}>×</button>
-        </div>
+        <Toast type='error' message={error} onClose={() => dispatch(clearErrors())} />
       )}
 
       <MembersFilters />
@@ -210,7 +208,6 @@ export const Members: React.FC = () => {
         )}
       </Modal>
 
-      {/* Delete Confirmation Modal */}
       <Modal
         isOpen={modalState.type === 'delete'}
         onClose={closeModal}
