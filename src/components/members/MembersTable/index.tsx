@@ -3,7 +3,6 @@ import { Edit, Trash2, Eye } from 'lucide-react';
 import { Member } from '../../../features/members/types';
 import { Button } from '@/components/ui/Button';
 import './index.css';
-import { useAppSelector } from '@/app/hooks';
 
 interface MembersTableProps {
   members: Member[];
@@ -20,8 +19,6 @@ export const MembersTable: React.FC<MembersTableProps> = ({
   onDelete,
   loading = false,
 }) => {
-
-  const { error } = useAppSelector((state) => state.members);
 
   const getStatusBadge = (status: 'active' | 'expired') => {
     const statusClasses = {

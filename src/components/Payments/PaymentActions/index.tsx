@@ -6,7 +6,6 @@ import { ConfirmationModal } from '@/components/ConfirmationModal';
 interface PaymentActionsProps {
   payment: Payment;
   onUpdate: (paymentId: number, data: any) => void;
-  onSendReminder: (paymentId: number) => void;
   onSendRequest: (paymentId: number, message?: string) => void;
 }
 
@@ -15,7 +14,6 @@ type ActionType = 'markPaid' | 'request' | null;
 export const PaymentActions: React.FC<PaymentActionsProps> = ({
   payment,
   onUpdate,
-  onSendReminder,
   onSendRequest,
 }) => {
   const [loading, setLoading] = useState(false);

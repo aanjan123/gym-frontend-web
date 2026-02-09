@@ -23,7 +23,7 @@ import { StatCard } from '@/components/StatCard';
 
 export const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { stats: dashboardData, loading, error } = useAppSelector((state) => state.dashboard);
+  const { stats: dashboardData, loading } = useAppSelector((state) => state.dashboard);
 
   useEffect(() => {
     dispatch(fetchDashboardStats())

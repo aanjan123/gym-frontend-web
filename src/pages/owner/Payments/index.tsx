@@ -9,7 +9,7 @@ import {
   fetchPayments,
   updatePayment,
   sendPaymentRequest,
-  sendPaymentReminder,
+  // sendPaymentReminder,
 } from '@/features/Payments/paymentsSlice';
 import './index.css';
 import { Toast } from '@/components/ui/Toast';
@@ -107,7 +107,7 @@ export const Payments: React.FC = () => {
             loading={loading}
             payments={filteredPayments}
             onUpdate={(paymentId, data) => dispatch(updatePayment(paymentId, data))}
-            onSendReminder={(paymentId) => dispatch(sendPaymentReminder(paymentId))}
+            // onSendReminder={(paymentId) => dispatch(sendPaymentReminder(paymentId))}
             onSendRequest={(paymentId, message) => dispatch(sendPaymentRequest(paymentId, message))}
           />
         </CardContent>

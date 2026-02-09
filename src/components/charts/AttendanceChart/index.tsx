@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   LineChart,
   Line,
@@ -8,13 +7,12 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { OwnerDashboardData } from '@/types/OwnerDashboard';
 
 interface Props {
-  data: OwnerDashboardData;
+  data: any;
 }
 
-export const AttendanceChart: React.FC<Props> = ({ data }) => {
+export const AttendanceChart = ({ data }: Props) => {
   /**
    * For demo, we'll generate last 7 days trend based on today's attendance.
    * In production, replace this with real attendance trend API.

@@ -9,7 +9,6 @@ import {
 import { GymsTable } from '@components/gym/GymsTable';
 import { GymsFiltersBar } from '@components/gym/GymsFiltersBar';
 import { Card, CardHeader, CardContent } from '@components/ui/Card';
-import { Button } from '@components/ui/Button';
 
 import '../Dashboard.css';
 import { SuspendGymModal } from '@/components/gym/SuspendGymModal';

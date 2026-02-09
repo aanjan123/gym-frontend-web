@@ -7,7 +7,7 @@ interface GymsState {
   gyms: Gym[];
   selectedGym: Gym | null;
   loading: boolean;
-  error: string | null;
+  error: any;
   filters: {
     status: 'all' | 'active' | 'suspended' | 'trial';
     search: string;
@@ -187,9 +187,9 @@ export const suspendGymAsync = (gymId: number, reason: string) => {
       dispatch(
         gymsRequestFailure(
           error.response?.data?.details ||
-            error.response?.data?.error ||
-            error.message ||
-            'Failed to suspend gym'
+          error.response?.data?.error ||
+          error.message ||
+          'Failed to suspend gym'
         )
       );
     }
@@ -217,9 +217,9 @@ export const activateGymAsync = (gymId: number) => {
       dispatch(
         gymsRequestFailure(
           error.response?.data?.details ||
-            error.response?.data?.error ||
-            error.message ||
-            'Failed to activate gym'
+          error.response?.data?.error ||
+          error.message ||
+          'Failed to activate gym'
         )
       );
     }

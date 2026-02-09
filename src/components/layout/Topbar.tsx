@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, LogOut, Bell } from 'lucide-react';
+import { Menu, LogOut } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { logout } from '../../features/auth/authSlice';
 import { Button } from '../ui/Button';

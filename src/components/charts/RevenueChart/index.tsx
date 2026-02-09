@@ -8,10 +8,9 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { OwnerDashboardData } from '@/types/OwnerDashboard';
 
 interface Props {
-  data: OwnerDashboardData;
+  data: any;
 }
 
 export const RevenueChart: React.FC<Props> = ({ data }) => {
@@ -20,7 +19,7 @@ export const RevenueChart: React.FC<Props> = ({ data }) => {
    * In production, replace this with real monthly trend API.
    */
   const months = ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'];
-  const revenueTrend = months.map((month, i) => ({
+  const revenueTrend = months.map((month) => ({
     month,
     revenue: Math.floor(data.monthlyRevenue * (0.7 + Math.random() * 0.6)),
   }));

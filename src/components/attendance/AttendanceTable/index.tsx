@@ -1,4 +1,3 @@
-import React from 'react';
 import { Table } from '@/components/ui/Table';
 import { Attendance } from '@/types/Attendance';
 

@@ -7,7 +7,6 @@ interface PaymentsTableProps {
   payments: Payment[];
   loading?: boolean;
   onUpdate: (paymentId: number, data: any) => void;
-  onSendReminder: (paymentId: number) => void;
   onSendRequest: (paymentId: number, message?: string) => void;
 }
 
@@ -15,7 +14,6 @@ export const PaymentsTable: React.FC<PaymentsTableProps> = ({
   payments,
   loading = false,
   onUpdate,
-  onSendReminder,
   onSendRequest,
 }) => {
   const columns = [
@@ -38,7 +36,7 @@ export const PaymentsTable: React.FC<PaymentsTableProps> = ({
         <PaymentActions
           payment={p}
           onUpdate={onUpdate}
-          onSendReminder={onSendReminder}
+          // onSendReminder={onSendReminder}
           onSendRequest={onSendRequest}
         />
       ),

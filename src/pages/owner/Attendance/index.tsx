@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { fetchAttendance, checkInMember, checkOutMember, markManualAttendance, clearAttendanceError } from '@/features/attendance/attendanceSlice';
+import { fetchAttendance, checkInMember, checkOutMember, clearAttendanceError } from '@/features/attendance/attendanceSlice';
 import { Card, CardHeader, CardContent } from '@/components/ui/Card';
 import { Table } from '@/components/ui/Table';
 import { AttendanceTable } from '@/components/attendance/AttendanceTable';
 import { Button } from '@/components/ui/Button';
-import { Check, LogIn, LogOut, UserCheck } from 'lucide-react';
+import { Check, LogIn, LogOut } from 'lucide-react';
 import { AttendanceFilters } from '@components/attendance/AttendanceFilters';
 import { useDebounce } from '@hooks/useDebounce';
 import './index.css';
@@ -37,13 +37,13 @@ export const Attendance: React.FC = () => {
     dispatch(fetchMembers());
   }, []);
 
-const todayAttendance = useMemo(() => {
-  const filterDate = new Date(filters.date);
-  filterDate.setDate(filterDate.getDate() - 1);
-  const formattedDate = filterDate.toISOString().split('T')[0];
+  const todayAttendance = useMemo(() => {
+    const filterDate = new Date(filters.date);
+    filterDate.setDate(filterDate.getDate() - 1);
+    const formattedDate = filterDate.toISOString().split('T')[0];
 
-  return attendanceList.filter((a) => getFormatedDate(a.date) === formattedDate);
-}, [attendanceList, filters.date]);
+    return attendanceList.filter((a) => getFormatedDate(a.date) === formattedDate);
+  }, [attendanceList, filters.date]);
 
 
   const handleCheckIn = (memberId: number) => {

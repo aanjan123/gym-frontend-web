@@ -5,7 +5,7 @@ import { AttendanceChart } from '@/components/charts/AttendanceChart';
 import { RevenueChart } from '@/components/charts/RevenueChart';
 
 export const ChartsSection: React.FC = () => {
-  const { stats, loading, error } = useAppSelector(
+  const { stats, } = useAppSelector(
     (state) => state.ownerDashboard
   );
 
