@@ -11,7 +11,7 @@ export const PackageTable = ({
   packages: Package[];
   onView: (pkg: Package) => void;
   onEdit: (pkg: Package) => void;
-  onDelete: (id: number) => void;
+  onDelete: (pkg: Package) => void;
 }) => {
   const columns = [
     { header: 'Name', accessor: 'name' as const },
@@ -19,11 +19,11 @@ export const PackageTable = ({
     {
       header: 'Duration',
       accessor: (p: Package) =>
-        `${p.duration_value} ${p.duration_type.replace('_', ' ')}`,
+        `${p.durationValue} ${p.durationType.replace('_', ' ')}`,
     },
     {
       header: 'Members',
-      accessor: (p: Package) => p.member_count ?? 0,
+      accessor: (p: Package) => p.memberCount ?? 0,
     },
     {
       header: 'Actions',
@@ -35,7 +35,7 @@ export const PackageTable = ({
           <Button size="sm" onClick={() => onEdit(p)}>
             Edit
           </Button>
-          <Button size="sm" variant="danger" onClick={() => onDelete(p.id)}>
+          <Button size="sm" variant="danger" onClick={() => onDelete(p)}>
             Delete
           </Button>
         </div>

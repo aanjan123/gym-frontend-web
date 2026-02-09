@@ -24,7 +24,7 @@ import { initializeAuth } from './features/auth/authSlice';
 // import { Announcements } from './pages/owner/Announcements';
 import { ChangePassword } from './pages/owner/ChangePassword';
 import { FullScreenLoader } from './components/ui/FullScreenLoader';
-import { Dashboard as OwnerDashboard } from './pages/owner/Dashboard';
+import { OwnerDashboard } from './pages/owner/Dashboard';
 
 function App() {
 

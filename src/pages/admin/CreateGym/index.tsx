@@ -30,7 +30,7 @@ export const CreateGym: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const { loading, error, selectedGym } = useAppSelector((state) => state.gyms);
+  const { loading, error } = useAppSelector((state) => state.gyms);
 
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -52,12 +52,6 @@ export const CreateGym: React.FC = () => {
       error?.map((err: any) => setErrors((prev) => ({ ...prev, [err.field]: err.message })));
     }
   }, [error]);
-
-  useEffect(() => {
-    if (selectedGym) {
-      setShowSuccess(true);
-    }
-  }, [selectedGym]);
 
   const handleChange = <K extends keyof GymFormData>(
     name: K,
@@ -118,7 +112,9 @@ export const CreateGym: React.FC = () => {
         subscriptionExpiresAt: formData.expiryDate,
         subscriptionPlan: formData.subscriptionPlan,
       })
-    );
+    ).finally(() => {
+      setShowSuccess(true);
+    });
 
   };
 

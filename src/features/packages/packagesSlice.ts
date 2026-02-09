@@ -64,6 +64,8 @@ const packagesSlice = createSlice({
     },
     clearLastCreatedPackage: (state) => {
       state.lastCreatedPackage = null;
+      state.validationErrors = {};
+      state.error = null;
     },
     clearPackagesState: () => initialState,
   },

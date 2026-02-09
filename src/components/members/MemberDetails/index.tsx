@@ -42,7 +42,7 @@ export const MemberDetails: React.FC<MemberDetailsProps> = ({
   };
 
   const calculateDaysRemaining = () => {
-    const endDate = new Date(member.membership_end_date);
+    const endDate = new Date(member.membershipEndDate);
     const today = new Date();
     const diffTime = endDate.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -56,8 +56,8 @@ export const MemberDetails: React.FC<MemberDetailsProps> = ({
       {/* Header */}
       <div className="details-header">
         <div>
-          <h2>{member.full_name}</h2>
-          <code className="member-code-large">{member.member_code}</code>
+          <h2>{member.fullName}</h2>
+          <code className="member-code-large">{member.memberCode}</code>
         </div>
         <div className="header-actions">
           <Button variant="primary" onClick={onEdit}>
@@ -71,11 +71,11 @@ export const MemberDetails: React.FC<MemberDetailsProps> = ({
 
       {/* Status */}
       <div className="details-status">
-        {getStatusBadge(member.membership_status)}
-        {!member.is_active && (
+        {getStatusBadge(member.membershipStatus)}
+        {!member.isActive && (
           <span className="detail-badge badge-warning">Inactive Account</span>
         )}
-        {member.membership_status === 'active' && daysRemaining <= 7 && daysRemaining > 0 && (
+        {member.membershipStatus === 'active' && daysRemaining <= 7 && daysRemaining > 0 && (
           <span className="detail-badge badge-warning">
             <AlertCircle size={14} />
             Expires in {daysRemaining} days
@@ -121,12 +121,12 @@ export const MemberDetails: React.FC<MemberDetailsProps> = ({
         <div className="detail-section">
           <h3 className="section-title">Personal Information</h3>
           <div className="detail-items">
-            {member.date_of_birth && (
+            {member.dateOfBirth && (
               <div className="detail-item">
                 <Calendar size={18} className="detail-icon" />
                 <div>
                   <span className="detail-label">Date of Birth</span>
-                  <span className="detail-value">{formatDate(member.date_of_birth)}</span>
+                  <span className="detail-value">{formatDate(member.dateOfBirth)}</span>
                 </div>
               </div>
             )}
@@ -163,10 +163,10 @@ export const MemberDetails: React.FC<MemberDetailsProps> = ({
               <div>
                 <span className="detail-label">Package</span>
                 <span className="detail-value">
-                  {member.package_name}
-                  {member.package_price && (
+                  {member.packageName}
+                  {member.packagePrice && (
                     <span className="package-price-tag">
-                      Rs. {member.package_price.toLocaleString()}
+                      Rs. {member.packagePrice.toLocaleString()}
                     </span>
                   )}
                 </span>
@@ -177,7 +177,7 @@ export const MemberDetails: React.FC<MemberDetailsProps> = ({
               <Calendar size={18} className="detail-icon" />
               <div>
                 <span className="detail-label">Start Date</span>
-                <span className="detail-value">{formatDate(member.membership_start_date)}</span>
+                <span className="detail-value">{formatDate(member.membershipStartDate)}</span>
               </div>
             </div>
 
@@ -185,7 +185,7 @@ export const MemberDetails: React.FC<MemberDetailsProps> = ({
               <Calendar size={18} className="detail-icon" />
               <div>
                 <span className="detail-label">End Date</span>
-                <span className="detail-value">{formatDate(member.membership_end_date)}</span>
+                <span className="detail-value">{formatDate(member.membershipEndDate)}</span>
               </div>
             </div>
 

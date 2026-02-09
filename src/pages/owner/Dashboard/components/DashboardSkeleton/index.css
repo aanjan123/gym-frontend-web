@@ -1,0 +1,39 @@
+.skeleton-card,
+.skeleton-chart {
+  padding: 1.5rem;
+}
+
+.skeleton-line {
+  background: linear-gradient(90deg,
+      var(--bg-tertiary),
+      var(--bg-secondary),
+      var(--bg-tertiary));
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+.skeleton-line.title {
+  width: 60%;
+  height: 14px;
+  margin-bottom: 1rem;
+}
+
+.skeleton-line.value {
+  width: 40%;
+  height: 28px;
+}
+
+.skeleton-chart {
+  height: 300px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}

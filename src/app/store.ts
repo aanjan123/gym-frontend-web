@@ -1,18 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from '../features/auth/authSlice';
-import gymsReducer from '../features/gyms/gymsSlice';
-import membersReducer from '../features/members/membersSlice';
-import PackageReducer from '../features/packages/packagesSlice';
-import dashboardReducer from '../features/dashboard/dashboardSlice';
-import changePasswordReducer from '../features/auth/changePasswordSlice';
+import authReducer from '@features/auth/authSlice';
+import gymsReducer from '@features/gyms/gymsSlice';
+import membersReducer from '@features/members/membersSlice';
+import PackageReducer from '@features/packages/packagesSlice';
+import dashboardReducer from '@features/dashboard/dashboardSlice';
+import changePasswordReducer from '@features/auth/changePasswordSlice';
+import ownerDashboardReducer from '@/features/ownerDashboard/ownerDashboardSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     gyms: gymsReducer,
-    packages: PackageReducer,
     members: membersReducer,
+    packages: PackageReducer,
     dashboard: dashboardReducer,
+    ownerDashboard: ownerDashboardReducer,
     changePassword: changePasswordReducer
   },
 });

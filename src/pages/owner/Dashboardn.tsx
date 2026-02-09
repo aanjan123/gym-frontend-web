@@ -6,27 +6,9 @@ import { Card, CardHeader, CardContent } from '../../components/ui/Card';
 import { attendanceTrendData, revenueData } from '../../data/dummyData';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import '../admin/Dashboard.css';
-
-const StatCard: React.FC<{
-  title: string;
-  value: string | number;
-  icon: React.ReactNode;
-  trend?: string;
-}> = ({ title, value, icon, trend }) => (
-  <Card className="stat-card">
-    <div className="stat-card-content">
-      <div className="stat-info">
-        <p className="stat-title">{title}</p>
-        <h2 className="stat-value">{value}</h2>
-        {trend && <p className="stat-trend trend-up">{trend}</p>}
-      </div>
-      <div className="stat-icon">{icon}</div>
-    </div>
-  </Card>
-);
+import { StatCard } from '@/components/StatCard';
 
 export const Dashboard: React.FC = () => {
-  const dispatch = useAppDispatch();
   const { stats } = useAppSelector((state) => state.dashboard);
 
   return (

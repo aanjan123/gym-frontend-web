@@ -1,21 +1,21 @@
 export interface Member {
   id: number;
   email: string;
-  is_active: boolean;
+  isActive: boolean;
   createdAt: string;
-  full_name: string;
+  fullName: string;
   phone?: string;
-  date_of_birth?: string;
+  dateOfBirth?: string;
   gender?: 'male' | 'female' | 'other';
   address?: string;
   emergencyContact?: string;
-  member_code: string;
-  membership_start_date: string;
-  membership_end_date: string;
-  package_id: number;
-  package_name?: string;
-  package_price?: number;
-  membership_status: 'active' | 'expired';
+  memberCode: string;
+  membershipStartDate: string;
+  membershipEndDate: string;
+  packageId: number;
+  packageName?: string;
+  packagePrice?: number;
+  membershipStatus: 'active' | 'expired';
 }
 
 export interface CreateMemberPayload {

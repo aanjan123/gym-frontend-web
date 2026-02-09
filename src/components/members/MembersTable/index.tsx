@@ -3,6 +3,7 @@ import { Edit, Trash2, Eye } from 'lucide-react';
 import { Member } from '../../../features/members/types';
 import { Button } from '@/components/ui/Button';
 import './index.css';
+import { useAppSelector } from '@/app/hooks';
 
 interface MembersTableProps {
   members: Member[];
@@ -19,6 +20,9 @@ export const MembersTable: React.FC<MembersTableProps> = ({
   onDelete,
   loading = false,
 }) => {
+
+  const { error } = useAppSelector((state) => state.members);
+
   const getStatusBadge = (status: 'active' | 'expired') => {
     const statusClasses = {
       active: 'status-badge status-success',
@@ -83,12 +87,12 @@ export const MembersTable: React.FC<MembersTableProps> = ({
           {members.map((member) => (
             <tr key={member.id}>
               <td>
-                <code className="member-code">{member.member_code}</code>
+                <code className="member-code">{member.memberCode}</code>
               </td>
               <td>
                 <div className="member-name">
-                  {member.full_name}
-                  {!member.is_active && (
+                  {member.fullName}
+                  {!member.isActive && (
                     <span className="inactive-badge">Inactive</span>
                   )}
                 </div>
@@ -97,20 +101,20 @@ export const MembersTable: React.FC<MembersTableProps> = ({
               <td className="text-secondary">{member.phone || '-'}</td>
               <td>
                 <div className="package-info">
-                  <span className="package-name">{member.package_name}</span>
-                  {member.package_price && (
+                  <span className="package-name">{member.packageName}</span>
+                  {member.packagePrice && (
                     <span className="package-price">
-                      Rs. {member.package_price.toLocaleString()}
+                      Rs. {member.packagePrice.toLocaleString()}
                     </span>
                   )}
                 </div>
               </td>
-              <td>{getStatusBadge(member.membership_status)}</td>
+              <td>{getStatusBadge(member.membershipStatus)}</td>
               <td className="text-secondary">
-                {formatDate(member.membership_start_date)}
+                {formatDate(member.membershipStartDate)}
               </td>
               <td className="text-secondary">
-                {formatDate(member.membership_end_date)}
+                {formatDate(member.membershipEndDate)}
               </td>
               <td>
                 <div className="action-buttons">

@@ -18,7 +18,7 @@ export const PackageFormModal = ({
   editingPackage?: Package | null;
 }) => {
   const dispatch = useAppDispatch();
-  const { validationErrors, loading, lastCreatedPackage } = useAppSelector((s) => s.packages);
+  const { validationErrors, loading, error } = useAppSelector((s) => s.packages);
 
   const [form, setForm] = useState({
     name: '',
@@ -31,20 +31,24 @@ export const PackageFormModal = ({
   });
 
   useEffect(() => {
-    if (lastCreatedPackage) {
-      onClose();
-    }
-  }, [lastCreatedPackage])
-
-  useEffect(() => {
     if (editingPackage) {
       setForm({
         name: editingPackage.name,
         price: editingPackage.price,
-        durationType: editingPackage.duration_type,
-        durationValue: editingPackage.duration_value,
+        durationType: editingPackage.durationType,
+        durationValue: editingPackage.durationValue,
         description: editingPackage.description || '',
         features: editingPackage.features || [],
+        featureInput: '',
+      });
+    } else {
+      setForm({
+        name: '',
+        price: '',
+        durationType: 'monthly',
+        durationValue: 1,
+        description: '',
+        features: [] as string[],
         featureInput: '',
       });
     }
@@ -79,9 +83,9 @@ export const PackageFormModal = ({
     };
 
     if (editingPackage) {
-      dispatch(updatePackage(editingPackage.id, payload));
+      dispatch(updatePackage(editingPackage.id, payload)).finally(() => onClose());
     } else {
-      dispatch(createPackage(payload));
+      dispatch(createPackage(payload)).finally(() => onClose());
     }
   };
 
@@ -147,7 +151,6 @@ export const PackageFormModal = ({
           </div>
         </div>
 
-        {/* Description */}
         <div className="form-field">
           <label>Description</label>
           <textarea
@@ -185,9 +188,12 @@ export const PackageFormModal = ({
               </span>
             ))}
           </div>
+
+          <div className="form-error">
+            {error && <h4 className='error-text'>{error}</h4>}
+          </div>
         </div>
 
-        {/* Actions */}
         <div className="form-actions">
           <Button type="button" variant="secondary" onClick={onClose}>
             Cancel

@@ -179,7 +179,6 @@ export const Members: React.FC = () => {
         />
       </Modal>
 
-      {/* Edit Member Modal */}
       <Modal
         isOpen={modalState.type === 'edit'}
         onClose={closeModal}
@@ -194,7 +193,6 @@ export const Members: React.FC = () => {
         />
       </Modal>
 
-      {/* View Member Modal */}
       <Modal
         isOpen={modalState.type === 'view'}
         onClose={closeModal}
@@ -221,7 +219,7 @@ export const Members: React.FC = () => {
       >
         <div className="delete-confirmation">
           <p>
-            Are you sure you want to delete <strong>{modalState.member?.full_name}</strong>?
+            Are you sure you want to delete <strong>{modalState.member?.fullName}</strong>?
           </p>
           <p className="delete-warning">
             This will permanently delete the member and all their data including attendance records and payments. This action cannot be undone.

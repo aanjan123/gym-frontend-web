@@ -18,7 +18,7 @@ export const PackageViewModal = ({
         <p className="price">Rs {pkg.price}</p>
 
         <p>
-          Duration: {pkg.duration_value} {pkg.duration_type.replace('_', ' ')}
+          Duration: {pkg.durationValue} {pkg.durationType.replace('_', ' ')}
         </p>
 
         {pkg.description && <p>{pkg.description}</p>}

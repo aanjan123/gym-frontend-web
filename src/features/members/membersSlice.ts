@@ -198,7 +198,7 @@ export const createMember =
       try {
         const res = await api.post('/owner/members', payload);
         if (res.data?.success) {
-          dispatch(addMember(res.data.member));
+          dispatch(fetchMembers());
           onSuccess?.();
         } else if (res.data?.details) {
           const errors: Record<string, string> = {};

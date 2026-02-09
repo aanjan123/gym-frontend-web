@@ -1,14 +1,19 @@
 import React from 'react';
 import { useAppSelector } from '@/app/hooks';
 import { Button } from '@/components/ui/Button';
+import { InputField } from '@/components/ui/InputField';
 import { CreateMemberPayload, UpdateMemberPayload, Member } from '@features/members/types';
 import './index.css';
-
 interface MemberFormProps {
   member?: Member | null;
   onSubmit: (data: CreateMemberPayload | UpdateMemberPayload) => void;
   onCancel: () => void;
   isLoading?: boolean;
+}
+
+export const getFormatedDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toISOString().split('T')[0];
 }
 
 export const MemberForm: React.FC<MemberFormProps> = ({
@@ -17,24 +22,23 @@ export const MemberForm: React.FC<MemberFormProps> = ({
   onCancel,
   isLoading = false,
 }) => {
-  const { validationErrors } = useAppSelector(state => state.members);
+  const { validationErrors, error } = useAppSelector(state => state.members);
   const { packages, loading: packagesLoading } = useAppSelector(state => state.packages);
-
   const [formData, setFormData] = React.useState({
     email: member?.email || '',
-    fullName: member?.full_name || '',
+    fullName: member?.fullName || '',
     phone: member?.phone || '',
-    dateOfBirth: member?.date_of_birth || '',
+    dateOfBirth: member?.dateOfBirth ? getFormatedDate(member?.dateOfBirth) : '',
     gender: member?.gender || '',
     address: member?.address || '',
     emergencyContact: member?.emergencyContact || '',
-    packageId: member?.package_id?.toString() || '',
-    membershipStartDate: member?.membership_start_date || new Date().toISOString().split('T')[0],
-    isActive: member?.is_active ?? true,
+    packageId: member?.packageId?.toString() || '',
+    membershipStartDate: member?.membershipStartDate ? getFormatedDate(member?.membershipStartDate) : new Date().toISOString().split('T')[0],
+    isActive: member?.isActive ?? true,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
+  const handleChange = (name: string, e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { value, type } = e.target;
 
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
@@ -59,106 +63,77 @@ export const MemberForm: React.FC<MemberFormProps> = ({
     };
 
     if (!member) {
-      // Creating new member
       payload.email = formData.email;
     } else {
-      // Updating existing member
       payload.isActive = formData.isActive;
     }
 
     onSubmit(payload);
   };
 
-  const activePackages = packages.filter(p => p.is_active);
+  const activePackages = packages.filter(p => p.isActive);
 
   return (
     <form className="member-form" onSubmit={handleSubmit}>
       <div className="form-grid">
-        {/* Email - only for new members */}
+
         {!member && (
-          <div className="form-field">
-            <label htmlFor="email">
-              Email <span className="required">*</span>
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="member@example.com"
-              disabled={isLoading}
-            />
-            {validationErrors.email && (
-              <span className="field-error">{validationErrors.email}</span>
-            )}
-          </div>
+          <InputField
+            label={"Email"}
+            placeholder="Enter email"
+            id="email"
+            type="email"
+            required
+            value={formData.email}
+            disabled={isLoading}
+            error={validationErrors.email}
+            onChange={(e) => handleChange('email', e)}
+          />
         )}
 
-        {/* Full Name */}
-        <div className="form-field">
-          <label htmlFor="fullName">
-            Full Name <span className="required">*</span>
-          </label>
-          <input
-            id="fullName"
-            name="fullName"
-            type="text"
-            required
-            value={formData.fullName}
-            onChange={handleChange}
-            placeholder="John Doe"
-            disabled={isLoading}
-          />
-          {validationErrors.fullName && (
-            <span className="field-error">{validationErrors.fullName}</span>
-          )}
-        </div>
+        <InputField
+          label={"Full Name"}
+          placeholder="Enter full name"
+          icon={null}
+          id="fullName"
+          type="text"
+          required
+          value={formData.fullName}
+          disabled={isLoading}
+          error={validationErrors.fullName}
+          onChange={(e) => handleChange('fullName', e)}
+        />
 
-        {/* Phone */}
-        <div className="form-field">
-          <label htmlFor="phone">Phone</label>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder="+977-9841234567"
-            disabled={isLoading}
-          />
-          {validationErrors.phone && (
-            <span className="field-error">{validationErrors.phone}</span>
-          )}
-        </div>
+        <InputField
+          label={"phone"}
+          placeholder="Enter phone number"
+          icon={null}
+          id="phone"
+          type="tel"
+          required
+          value={formData.phone}
+          disabled={isLoading}
+          error={validationErrors.phone}
+          onChange={(e) => handleChange('phone', e)}
+        />
 
-        {/* Date of Birth */}
-        <div className="form-field">
-          <label htmlFor="dateOfBirth">Date of Birth</label>
-          <input
-            id="dateOfBirth"
-            name="dateOfBirth"
-            type="date"
-            value={formData.dateOfBirth}
-            onChange={handleChange}
-            disabled={isLoading}
-            max={new Date().toISOString().split('T')[0]}
-          />
-          {validationErrors.dateOfBirth && (
-            <span className="field-error">{validationErrors.dateOfBirth}</span>
-          )}
-        </div>
+        <InputField
+          id="Date of Birth"
+          label="Date of Birth"
+          type="date"
+          value={formData.dateOfBirth}
+          onChange={(e) => handleChange('dateOfBirth', e)}
+        />
 
         {/* Gender */}
-        <div className="form-field">
+        <div className="form-group form-field">
           <label htmlFor="gender">Gender</label>
           <select
             id="gender"
             name="gender"
             value={formData.gender}
-            onChange={handleChange}
             disabled={isLoading}
+            onChange={(e) => handleChange('gender', e)}
           >
             <option value="">Select Gender</option>
             <option value="male">Male</option>
@@ -170,40 +145,35 @@ export const MemberForm: React.FC<MemberFormProps> = ({
           )}
         </div>
 
-        {/* Emergency Contact */}
-        <div className="form-field">
-          <label htmlFor="emergencyContact">Emergency Contact</label>
-          <input
-            id="emergencyContact"
-            name="emergencyContact"
-            type="tel"
-            value={formData.emergencyContact}
-            onChange={handleChange}
-            placeholder="+977-9841234567"
-            disabled={isLoading}
-          />
-          {validationErrors.emergencyContact && (
-            <span className="field-error">{validationErrors.emergencyContact}</span>
-          )}
-        </div>
+        <InputField
+          label={"Emergency Contact"}
+          placeholder="Enter emergency contact number"
+          icon={null}
+          id="emergencyContact"
+          type="tel"
+          required
+          value={formData.emergencyContact}
+          disabled={isLoading}
+          error={validationErrors.emergencyContact}
+          onChange={(e) => handleChange('emergencyContact', e)}
+        />
 
-        {/* Package */}
         <div className="form-field">
           <label htmlFor="packageId">
-            Membership Package <span className="required">*</span>
+            Membership Package
           </label>
           <select
             id="packageId"
             name="packageId"
             required
             value={formData.packageId}
-            onChange={handleChange}
+            onChange={(e) => handleChange('packageId', e)}
             disabled={isLoading || packagesLoading}
           >
             <option value="">Select Package</option>
             {activePackages.map(pkg => (
               <option key={pkg.id} value={pkg.id}>
-                {pkg.name} - Rs. {pkg.price.toLocaleString()} ({pkg.duration_type})
+                {pkg.name} - Rs. {pkg.price.toLocaleString()} ({pkg.durationType})
               </option>
             ))}
           </select>
@@ -212,26 +182,15 @@ export const MemberForm: React.FC<MemberFormProps> = ({
           )}
         </div>
 
-        {/* Membership Start Date */}
-        <div className="form-field">
-          <label htmlFor="membershipStartDate">
-            Membership Start Date <span className="required">*</span>
-          </label>
-          <input
-            id="membershipStartDate"
-            name="membershipStartDate"
-            type="date"
-            required
-            value={formData.membershipStartDate}
-            onChange={handleChange}
-            disabled={isLoading}
-          />
-          {validationErrors.membershipStartDate && (
-            <span className="field-error">{validationErrors.membershipStartDate}</span>
-          )}
-        </div>
+        <InputField
+          id="membershipStartDate"
+          label="Membership Start Date "
+          type="date"
+          value={formData.membershipStartDate}
+          onChange={(e) => handleChange('membershipStartDate', e)}
+          required
+        />
 
-        {/* Active Status - only for editing */}
         {member && (
           <div className="form-field form-checkbox">
             <label htmlFor="isActive">
@@ -240,22 +199,21 @@ export const MemberForm: React.FC<MemberFormProps> = ({
                 name="isActive"
                 type="checkbox"
                 checked={formData.isActive}
-                onChange={handleChange}
                 disabled={isLoading}
+                onChange={(e) => handleChange('isActive', e)}
               />
               <span>Active Member</span>
             </label>
           </div>
         )}
 
-        {/* Address - full width */}
         <div className="form-field form-field-full">
           <label htmlFor="address">Address</label>
           <textarea
             id="address"
             name="address"
             value={formData.address}
-            onChange={handleChange}
+            onChange={(e) => handleChange('address', e)}
             placeholder="Full address"
             disabled={isLoading}
             rows={3}
@@ -264,9 +222,14 @@ export const MemberForm: React.FC<MemberFormProps> = ({
             <span className="field-error">{validationErrors.address}</span>
           )}
         </div>
+
+        <div className='form-error'>
+          {error && (
+            <h4 className="field-error bold">{error}</h4>
+          )}
+        </div>
       </div>
 
-      {/* Form Actions */}
       <div className="form-actions">
         <Button
           type="button"
