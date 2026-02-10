@@ -8,8 +8,8 @@ export const OwnerLogin = () => {
       redirectPath="/owner/dashboard"
       showGymId
       demoCredentials={[
-        { label: 'Gym ID', value: 'gym-001' },
-        { label: 'Email', value: 'john@fitzone.com' },
+        { label: 'Gym ID', value: '1' },
+        { label: 'Email', value: 'owner@fitzone.com.np' },
         { label: 'Password', value: 'owner123' },
       ]}
     />
