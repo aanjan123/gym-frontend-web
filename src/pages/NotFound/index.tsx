@@ -296,22 +296,6 @@ export const NotFound = () => {
           background: #fafafa;
           transform: translateY(-2px);
         }
-
-        .not-found-footer {
-          padding-top: 2rem;
-          border-top: 1px solid #e5e5e5;
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        .not-found-footer p {
-          font-size: 0.875rem;
-          color: #737373;
-          margin: 0;
-          font-family: system-ui, -apple-system, sans-serif;
-        }
-
         code {
           background: #f5f5f5;
           padding: 0.25rem 0.5rem;
