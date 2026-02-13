@@ -67,19 +67,6 @@ export const NotFound: React.FC = () => {
             </span>
             <div className="btn-shimmer"></div>
           </button>
-
-          <button
-            onClick={() => window.history.back()}
-            className="btn btn-secondary"
-          >
-            <span className="btn-content">
-              <svg className="btn-icon" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
-              </svg>
-              <span style={{ color: 'white' }}>Go Back</span>
-            </span>
-          </button>
         </div>
       </div>
 
