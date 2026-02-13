@@ -1,7 +1,3 @@
-// server.js - Express server for Vite SPA
-// Tested and working version for Node.js v18+
-// Run: node server.js
-
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
