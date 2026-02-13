@@ -1,0 +1,37 @@
+services:
+  # Main web service for the Vite React SPA
+  - type: web
+    name: gym-frontend-web
+    env: node
+    plan: free
+    
+    # Build configuration
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    
+    # Environment variables
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 18.17.1
+    
+    # Health check (optional but recommended)
+    healthCheckPath: /
+    
+    # Limits
+    staticPublicPath: dist
+    
+    # Custom domains (update with your domain)
+    # routes:
+    #   - path: /
+    #     matchType: prefix
+    #     priority: 100
+    #     dest: /index.html
+
+# To use this file:
+# 1. Save as render.yaml in your project root
+# 2. Commit to GitHub
+# 3. Go to render.com → New → Web Service
+# 4. Connect your GitHub repo
+# 5. Render will auto-detect this file and use these settings

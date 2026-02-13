@@ -24,7 +24,8 @@ export default defineConfig({
       "@css": path.resolve(__dirname, 'src/css'),
     }
   },
-  server: {
-    middlewareMode: false,
-  },
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+  }
 })
