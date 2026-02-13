@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AdminLayout } from './layouts/AdminLayout';
 import { OwnerLayout } from './layouts/OwnerLayout';
 import { ProtectedRoute } from './routes/ProtectedRoute';
+import { NotFound } from './pages/NotFound';
 
 // Auth Pages
 import { OwnerLogin } from './pages/auth/OwnerLogin';
@@ -21,18 +22,16 @@ import { Payments } from './pages/owner/Payments';
 import { Packages } from './pages/owner/Packages';
 import { Attendance } from './pages/owner/Attendance';
 import { initializeAuth } from './features/auth/authSlice';
-// import { Announcements } from './pages/owner/Announcements';
 import { ChangePassword } from './pages/owner/ChangePassword';
 import { FullScreenLoader } from './components/ui/FullScreenLoader';
 import { OwnerDashboard } from './pages/owner/Dashboard';
 
 function App() {
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(initializeAuth());
-  }, []);
+  }, [dispatch]);
 
   return (
     <BrowserRouter>
@@ -56,7 +55,6 @@ function App() {
           <Route path="manage-gyms" element={<ManageGyms />} />
         </Route>
 
-        {/* Gym Owner Routes */}
         <Route
           path="/owner"
           element={
@@ -71,11 +69,11 @@ function App() {
           <Route path="attendance" element={<Attendance />} />
           <Route path="payments" element={<Payments />} />
           <Route path="packages" element={<Packages />} />
-          {/* <Route path="announcements" element={<Announcements />} /> */}
         </Route>
 
-        {/* Catch all */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Error Pages */}
+        <Route path="/404" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

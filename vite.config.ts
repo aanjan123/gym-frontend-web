@@ -23,5 +23,8 @@ export default defineConfig({
       '@constants': path.resolve(__dirname, 'src/constants'),
       "@css": path.resolve(__dirname, 'src/css'),
     }
-  }
+  },
+  server: {
+    middlewareMode: false,
+  },
 })
