@@ -28,10 +28,3 @@ services:
     #     matchType: prefix
     #     priority: 100
     #     dest: /index.html
-
-# To use this file:
-# 1. Save as render.yaml in your project root
-# 2. Commit to GitHub
-# 3. Go to render.com → New → Web Service
-# 4. Connect your GitHub repo
-# 5. Render will auto-detect this file and use these settings
