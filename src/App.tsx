@@ -25,6 +25,7 @@ import { initializeAuth } from './features/auth/authSlice';
 import { ChangePassword } from './pages/owner/ChangePassword';
 import { FullScreenLoader } from './components/ui/FullScreenLoader';
 import { OwnerDashboard } from './pages/owner/Dashboard';
+import { Announcements } from './pages/owner/Announcements';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -69,6 +70,7 @@ function App() {
           <Route path="attendance" element={<Attendance />} />
           <Route path="payments" element={<Payments />} />
           <Route path="packages" element={<Packages />} />
+          <Route path="announcements" element={<Announcements />} />
         </Route>
 
         {/* Error Pages */}
